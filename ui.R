@@ -24,7 +24,7 @@ shinyUI(fluidPage(
       sliderInput("radius",
                   "Radius to search in miles",
                   min = 1,
-                  max = 100,
+                  max = 250,
                   value = 40)
     ),
     
