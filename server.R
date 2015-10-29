@@ -1,17 +1,10 @@
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
-
 library(shiny)
 library(schooldistricts)
 
 shinyServer(function(input, output) {
 
   districts <- reactive({
-    districtproximity::districtsWithinRange(as.numeric(input$lat), as.numeric(input$long), input$radius)
+    districtsWithinRange(as.numeric(input$lat), as.numeric(input$long), input$radius)
   })
   
   output$districts_table <- renderDataTable({
@@ -26,3 +19,20 @@ shinyServer(function(input, output) {
     }
   )
 })
+
+districtsWithinRange <- function(lat, long, dist_in_miles) {
+  # Fetch a data.frame of public school districts near some point
+  df <- schooldistricts::publicschooldistricts
+  df$dist_to_city <- geosphere::distm(
+    df[, c("loc_LONG_centroid","loc_LAT_centroid")],
+    c(long, lat)
+  )
+  df$dist_to_city_miles = df$dist_to_city * meterToMile()
+  subset(df, dist_to_city_miles <= dist_in_miles)
+}
+
+
+meterToMile <- function() {
+  # Numeric converter from meter to mile
+  0.000621371
+}
