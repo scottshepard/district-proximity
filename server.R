@@ -6,6 +6,7 @@
 #
 
 library(shiny)
+library(schooldistricts)
 
 shinyServer(function(input, output) {
 

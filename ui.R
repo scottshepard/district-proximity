@@ -6,8 +6,6 @@
 #
 
 library(shiny)
-library(schooldistricts)
-library(districtproximity)
 
 shinyUI(fluidPage(
   
